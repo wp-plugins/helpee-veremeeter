@@ -1,16 +1,16 @@
 <?php
 /*
-Plugin Name: Veremeeter
-Plugin URI: http://xxx.xxx.xx/xxxx
-Description: A brief description of the Plugin.
-Version: 1.0
-Author: Name Of The Plugin Author
-Author URI: http://URI_Of_The_Plugin_Author
+Plugin Name: Help.ee Veremeeter
+Plugin URI: http://www.help.ee/veremeeter
+Description: Help.ee Veremeeter on WP vidin, mis näitab www.verekeskus.ee vereseisu. Kui olukord on kehv, läheb vidin punaseks. 
+Version: 1.2
+Author: Help.ee (Andero K, Taavi Larionov, Kaupo Kalda, Veiko Jääger)
+Author URI: http://www.help.ee
 License: GPL2
 */
 
 // Plugin version
-define('VEREMEETER_VERSION', '1.0');
+define('VEREMEETER_VERSION', '1.2');
 
 // This URL will always point to the path our plugin files are located
 define('VEREMEETER_URL', plugins_url() . '/' . str_replace(basename(__FILE__), '', plugin_basename(__FILE__)));
