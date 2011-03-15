@@ -2,9 +2,9 @@
 /*
 Plugin Name: Help.ee Veremeeter
 Plugin URI: http://www.help.ee/veremeeter
-Description: Help.ee Veremeeter on WP vidin, mis näitab www.verekeskus.ee vereseisu. Kui olukord on kehv, läheb vidin punaseks. 
+Description: Help.ee Veremeeter on WP vidin, mis nï¿½itab www.verekeskus.ee vereseisu. Kui olukord on kehv, lï¿½heb vidin punaseks.
 Version: 1.2
-Author: Help.ee (Andero K, Taavi Larionov, Kaupo Kalda, Veiko Jääger)
+Author: Help.ee (Andero K, Taavi Larionov, Kaupo Kalda, Veiko Jï¿½ï¿½ger)
 Author URI: http://www.help.ee
 License: GPL2
 */
@@ -58,40 +58,41 @@ class Veremeeter extends WP_Widget
 		}
 		else
 		{
-			$xmlData = file_get_contents(sprintf('http://www.verekeskus.ee/verekeskus_xml.php?id=%s&imp=%d&uimp=%d&ref=%s%s', urlencode($id), $impression_count, get_option('veremeeter_unique_imptession_count', 0), urlencode($_SERVER['SERVER_NAME']), urlencode($_SERVER['SCRIPT_NAME'])));
-			if (!$xmlData)
+			$xmlData = @file_get_contents(sprintf('http://www.verekeskus.ee/verekeskus_xml.php?id=%s&imp=%d&uimp=%d&ref=%s%s', urlencode($id), $impression_count, get_option('veremeeter_unique_imptession_count', 0), urlencode($_SERVER['SERVER_NAME']), urlencode($_SERVER['SCRIPT_NAME'])));
+			if ($xmlData)
 			{
-				return;
+    			$doc = new DOMDocument('1.0', 'utf-8');
+    			$doc->loadXML($xmlData);
+    			$root = $doc->documentElement;
+    			if ($root->getElementsByTagName('blood'))
+    			{
+    				foreach ($root->getElementsByTagName('blood') as $blood)
+    				{
+    					$data['blood'][] = array(
+    						'level' => $blood->getAttribute('level'),
+    						'isCritical' => $blood->getAttribute('isCritical'),
+    						'name' => $blood->nodeValue,
+    					);
+    				}
+    			}
+    			if ($root->getElementsByTagName('feed'))
+    			{
+    				foreach ($root->getElementsByTagName('feed') as $feed)
+    				{
+    					$data['feed'][] = array(
+    						'link' => $feed->getAttribute('link'),
+    						'title' => $feed->nodeValue,
+    					);
+    				}
+    			}
+    			update_option('veremeeter_last_update', time());
+    			$last_update = time();
+    			update_option('veremeeter_items', serialize($data));
+    			$impression_count = 0;
+			} else {
+			    $data = get_option('veremeeter_items', null);
+			    $data = unserialize($data);
 			}
-
-			$doc = new DOMDocument('1.0', 'utf-8');
-			$doc->loadXML($xmlData);
-			$root = $doc->documentElement;
-			if ($root->getElementsByTagName('blood'))
-			{
-				foreach ($root->getElementsByTagName('blood') as $blood)
-				{
-					$data['blood'][] = array(
-						'level' => $blood->getAttribute('level'),
-						'isCritical' => $blood->getAttribute('isCritical'),
-						'name' => $blood->nodeValue,
-					);
-				}
-			}
-			if ($root->getElementsByTagName('feed'))
-			{
-				foreach ($root->getElementsByTagName('feed') as $feed)
-				{
-					$data['feed'][] = array(
-						'link' => $feed->getAttribute('link'),
-						'title' => $feed->nodeValue,
-					);
-				}
-			}
-			update_option('veremeeter_last_update', time());
-			$last_update = time();
-			update_option('veremeeter_items', serialize($data));
-			$impression_count = 0;
 		}
 
 		$bloodNameMap = array(
@@ -115,16 +116,16 @@ class Veremeeter extends WP_Widget
 				$cnt = 0;
 				foreach ($data['blood'] as $key => $blood)
 				{
-					// see rida sisse kui tahad criticale ja vigaseid näha
+					// see rida sisse kui tahad criticale ja vigaseid nï¿½ha
 					//$data['blood'][$key]['level'] = $blood['isCritical'] = $data['blood'][$key]['isCritical'] = 1;
-					
-					// see blokk sisse kui tahad kõik ok näha
+
+					// see blokk sisse kui tahad kï¿½ik ok nï¿½ha
 					/*
 					$data['blood'][$key]['level'] = 10;
 					$blood['level'] = 10;
 					$blood['isCritical'] = $data['blood'][$key]['isCritical'] = 0;
 					*/
-					
+
 					$average += $blood['level'];
 					$cnt++;
 					if ($blood['level'] < 7)
@@ -136,7 +137,7 @@ class Veremeeter extends WP_Widget
 
 				$out .= '<div id="veremeeter">';
 				$out .= '<p class="vm-title">Doonorivere seis <a href="http://www.verekeskus.ee" target="_blank">Verekeskuses:</a></p>';
-				
+
 
 				if ($isCritical)
 				{
