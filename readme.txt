@@ -4,7 +4,7 @@ Donate link: http://help.ee/
 Tags: veremeeter, widget, eesti, estonia, doonorid, verekeskus, help.ee, blood donation
 Requires at least: 3.0
 Tested up to: 3.0.4
-Stable tag: 1.2
+Stable tag: 1.3
 
 Help.ee Veremeeter on WP vidin, mis näitab www.verekeskus.ee vereseisu. Kui olukord on kehv, läheb vidin punaseks.
 
@@ -48,3 +48,6 @@ veremeeter.png
 
 = 1.0 =
 Hetkel veel uuendusi pole.
+
+= 1.3 =
+file_get_contents hoiatuse vaigistamine

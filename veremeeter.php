@@ -3,7 +3,7 @@
 Plugin Name: Help.ee Veremeeter
 Plugin URI: http://www.help.ee/veremeeter
 Description: Help.ee Veremeeter on WP vidin, mis n�itab www.verekeskus.ee vereseisu. Kui olukord on kehv, l�heb vidin punaseks.
-Version: 1.2
+Version: 1.3
 Author: Help.ee (Andero K, Taavi Larionov, Kaupo Kalda, Veiko J��ger)
 Author URI: http://www.help.ee
 License: GPL2
